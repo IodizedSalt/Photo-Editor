@@ -1,92 +1,83 @@
 from tkinter import *
-from tkinter import ttk    #Extra components from tkinter (Nicer than the default)
+import tkinter as tk
+from tkinter import ttk  # Extra components from tkinter (Nicer than the default)
 from PIL import Image, ImageTk
-root = Tk()  #Initialize tkinter root widget.
+
+root = Tk()  # Initialize tkinter root widget.
 
 root.title("Photo Editor")
-root.state('zoomed') #Makes Fullscreen
-frame = Frame(root)
-# frame.pack()
-frame.grid()
-frame.grid_rowconfigure(1, weight=1)
-frame.grid_columnconfigure(0, weight=1)
+root.state('zoomed')  # Makes Fullscreen
 
+#Dividing sections into frames and adding to MainApplication Frame
+class Frames:
+    ToolBar = Frame(root)
+    ToolBox = Frame(root)
+    Canvas = Frame(root)
+    PhotoBox = Frame(root)
+
+#Formatting Row 1 to distribute space between rows
+root.grid_rowconfigure(1, weight=1)
+
+#Formatting all section Frames into the main Frame
+Frames.ToolBar.grid(row=0,column=0, sticky=W, columnspan=5)
+Frames.ToolBox.grid(row=1,column=0, sticky=E, padx=100)
+Frames.Canvas.grid(row=1,column= 1, sticky=N, padx=100)
+Frames.PhotoBox.grid(row=1,column=2, sticky=E, padx=100)
+
+#File/Help Toolbar in top left
 class ToolBar:
-    ttk.Button(root, text="File").grid(row=0, column=0)
-    ttk.Button(root, text="Help").grid(row=0, column=1)
-    #-----------------------------------------------------------------------------
+    fileButton = ttk.Button(Frames.ToolBar, text="File")
+    helpButton = ttk.Button(Frames.ToolBar, text="Help")
+
+    fileButton.grid(row=0, column=0)
+    helpButton.grid(row=0, column=1)
+
+#ToolBox section for physical alterations to images
 class ToolBox:
-    ttk.Label(root, text="Toolbox").grid(row=2, column = 1, pady=10)
-    ttk.Button(root, text="Crop").grid(row=3, column=1,pady=10)
-    ttk.Button(root, text="Rotate").grid(row=4, column=1,pady=10)
-    #-----------------------------------------------------------------------------
-# class Canvas:
-#     openImage = Image.open("assets/Transparent.jpg")
-#     img = ImageTk.PhotoImage(openImage)
-#     transparentBackground = Label(image = img)
-#     transparentBackground.grid(row=1, column=2, padx=400)
-    #-----------------------------------------------------------------------------
+    toolBoxLabel = ttk.Label(Frames.ToolBox, text="Toolbox")
+    cropButton = ttk.Button(Frames.ToolBox, text="Crop")
+    rotateButton = ttk.Button(Frames.ToolBox, text="Rotate")
+
+    toolBoxLabel.grid(row=2, column=1, pady=10)
+    cropButton.grid(row=3, column=1, pady=10)
+    rotateButton.grid(row=4, column=1, pady=10)
+
+#Canvas section for the image
+class Canvas:
+    openImage = Image.open("assets/Transparent.jpg")
+    img = ImageTk.PhotoImage(openImage)
+
+    transparentBackground = Label(Frames.Canvas, image=img)
+    transparentBackground.grid(row=1, column=2)
+
+    Frames.Canvas.grid_rowconfigure(0, weight=1)
+    Frames.Canvas.grid_columnconfigure(1, weight=1)
+
+#PhotoBox opacity slider
+slider = tk.StringVar()
+slider.set(("0% Opacity"))
+
+#PhotoBox section for digital alterations to images
 class PhotoBox:
-    ttk.Label(root, text="Colourbox").grid(row=2, column = 3, pady=10)
-    ttk.Button(root, text="Exposure").grid(row=3, column=3,pady=10)
-    ttk.Button(root, text="Saturation").grid(row=4, column=3,pady=10)
-    ttk.Scale(root, from_=0, to=42).grid(row=5, column=3,pady=10)
-    ttk.Combobox(root).grid(row=6, column=3,pady=10)
 
 
+    colourBoxLabel = ttk.Label(Frames.PhotoBox, text="Colourbox")
+    exposureButton = ttk.Button(Frames.PhotoBox, text="Exposure")
+    saturationButton = ttk.Button(Frames.PhotoBox, text="Saturation")
+    opacityLabel = ttk.Label(Frames.PhotoBox, textvariable=slider)
+    opacityScale = ttk.Scale(Frames.PhotoBox, from_=0, to=100,
+        command=lambda s:slider.set('%0.0f' % float(s) + "% Opacity"))
+    filterBox = ttk.Combobox(Frames.PhotoBox)
 
+    colourBoxLabel.grid(row=2, column=1, pady=10)
+    exposureButton.grid(row=3, column=1, pady=10)
+    saturationButton.grid(row=4, column=1, pady=10)
+    opacityLabel.grid(row=5, column=2)
+    opacityScale.grid(row=5, column=1, pady=10)
+    filterBox.grid(row=6, column=1, pady=10)
 
-
-
-# #MainFrame containters
-# class Frames:
-#     toolBar = Frame(root).pack(side=TOP, anchor=NW)
-#     toolBox = Frame(root).pack(side=LEFT, anchor=W)
-#     canvas = Frame(root).pack(side=TOP, anchor=CENTER)
-#     photobox = Frame(root).pack(side=RIGHT, anchor=CENTER)
-#
-#
-# root.grid_rowconfigure(1, weight=1)
-# root.grid_columnconfigure(0, weight=1)
-#
-# Frames.toolBar.grid(row=0)
-# Frames.toolBox.grid(row=1)
-# Frames.canvas.grid(row=3)
-# Frames.photobox.grid(row=4)
-#
-# #Topleft Toolbar
-# class ToolBar:
-#     # toolBar = Frame(root).pack(side=TOP, anchor=NW)
-#     file = ttk.Button(root, text="File").pack(side=LEFT, anchor=NW, expand=1)
-#     help = ttk.Button(root, text="Help").pack(side=LEFT, anchor=NW, expand=1)
-#     #-----------------------------------------------------------------------------
-#
-# ToolBar.file.grid(row=0, columnspan=3)
-# ToolBar.help.grid(row=1, column=0)
-#
-# #ToolBox W
-# class ToolBox:
-#     # toolBox = Frame(root).pack(side=LEFT, anchor=E)
-#     ttk.Label(root, text="Toolbox").pack(side=LEFT, anchor=CENTER)
-#     ttk.Button(root, text="Crop").pack(side=LEFT, anchor=CENTER)
-#     ttk.Button(root, text="Rotate").pack(side=LEFT, anchor=CENTER)
-#     #-----------------------------------------------------------------------------
-# #Canvas
-# class Canvas:
-#     # canvas = Frame(root).pack(side=TOP, anchor=CENTER)
-#     openImage = Image.open("assets/Transparent.jpg")
-#     img = ImageTk.PhotoImage(openImage)
-#     transparentBackground = Label(image = img)
-#     transparentBackground.pack(side=TOP, anchor=CENTER, expand=1)
-#     #-----------------------------------------------------------------------------
-# class PhotoBox:
-#     # photobox = Frame(root).pack(side=RIGHT, anchor=W)
-#     ttk.Label(root, text="Colourbox").pack(side=RIGHT, anchor=W)
-#     ttk.Button(root, text="Exposure").pack(side=RIGHT, anchor=W)
-#     ttk.Button(root, text="Saturation").pack(side=RIGHT, anchor=W)
-#     ttk.Scale(root, from_=0, to=42).pack(side=RIGHT, anchor=W)
-#     ttk.Combobox(root).pack(side=RIGHT, anchor=W)
-
-
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 root.mainloop()
