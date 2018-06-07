@@ -1,7 +1,8 @@
 from tkinter import *
 import tkinter as tk
-from tkinter import ttk  # Extra components from tkinter (Nicer than the default)
+from tkinter import ttk,filedialog  # Extra components from tkinter (Nicer than the default)
 from PIL import Image, ImageTk
+from Functions import *
 
 root = Tk()  # Initialize tkinter root widget.
 
@@ -26,8 +27,17 @@ Frames.PhotoBox.grid(row=1,column=2, sticky=E, padx=100)
 
 #File/Help Toolbar in top left
 class ToolBar:
-    fileButton = ttk.Button(Frames.ToolBar, text="File")
-    helpButton = ttk.Button(Frames.ToolBar, text="Help")
+    fileButton = ttk.Menubutton(Frames.ToolBar, text="File")
+
+    fileButton.menu = Menu(fileButton, tearoff=FALSE)
+    fileButton["menu"] = fileButton.menu
+    fileButton.menu.add_command(label="New", command=newFile)
+    fileButton.menu.add_command(label="Save", command=saveFile)
+    fileButton.menu.add_command(label="Restore", command=restoreFile)
+    fileButton.menu.add_command(label="Undo", command=undoFile)
+    fileButton.menu.add_command(label="Redo", command=redoFile)
+
+    helpButton = ttk.Button(Frames.ToolBar, text="Help", command=displayHelp)
 
     fileButton.grid(row=0, column=0)
     helpButton.grid(row=0, column=1)
