@@ -95,3 +95,9 @@ def makeImageForTk(canvas):
         canvas.data.resizedIm = resizedImage
         return ImageTk.PhotoImage(resizedImage)
 
+def rotate(canvas):
+    im = canvas.data.image
+    copyim = im.rotate(90, expand=True)
+    canvas.data.image = copyim
+    canvas.data.imageForTk = makeImageForTk(canvas)
+    drawImage(canvas)

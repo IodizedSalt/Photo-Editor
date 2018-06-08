@@ -64,7 +64,7 @@ def initLeftKit():
                           width=buttonWidth, height=buttonHeight)
     rotateButton = Button(toolKitFrame, text="Rotate", \
                           background=backgroundColour, \
-                          width=buttonWidth, height=buttonHeight)
+                          width=buttonWidth, height=buttonHeight, command=lambda: rotate(canvas))
 
     toolBoxLabel.grid(row=2, column=0)
     cropButton.grid(row=3, column=0)
