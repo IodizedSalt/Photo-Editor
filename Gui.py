@@ -41,6 +41,7 @@ buttonHeight = 2
 slider = StringVar()
 slider.set(("0% Opacity"))
 
+
 def initMenuBar():
     menubar = Menu(root)
     fileButton = Menu(menubar, tearoff=0)
@@ -49,7 +50,7 @@ def initMenuBar():
     fileButton.menu = Menu(fileButton, tearoff=0)
     fileButton.add_command(label="New", command=lambda: newImage(canvas))
     fileButton.add_command(label="Save", command=lambda: saveImage(canvas))
-    fileButton.add_command(label="Restore")
+    fileButton.add_command(label="Restore", command=lambda: restoreImage(canvas))
     fileButton.add_command(label="Undo")
     fileButton.add_command(label="Redo")
     menubar.add_command(label="Help", command=lambda: displayHelp())

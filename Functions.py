@@ -15,9 +15,12 @@ import imghdr
 from Functions import *
 from PIL import ImageDraw
 from collections import *
+def restoreImage(canvas):
+    canvas.data.image = canvas.data.originalImage
+    canvas.data.imageForTk = makeImageForTk(canvas)
+    drawImage(canvas)
 
-def restoreFile():
-    print("Restore")
+
 def undoFile():
     print("Undo")
 def redoFile():
@@ -55,6 +58,7 @@ def newImage(canvas):
         canvas.data.imageLocation = imageName
         im = Image.open(imageName)
         canvas.data.image = im
+        origImag = im
         canvas.data.originalImage = im.copy()
         canvas.data.undoQueue.append(im.copy())
         canvas.data.imageSize = im.size  # Original Image dimensions
