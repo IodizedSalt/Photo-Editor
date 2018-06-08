@@ -77,7 +77,7 @@ def newImage(canvas):
     else:
         messagebox.showinfo(title="Image File", \
                               message="Choose an Image File!", parent=canvas.data.mainWindow)
-def drawImage(canvas):
+def drawImage(canvas):  
     if canvas.data.image != None:
         # make the canvas center and the image center the same
         canvas.create_image(canvas.data.width / 2.0 - canvas.data.resizedIm.size[0] / 2.0,
