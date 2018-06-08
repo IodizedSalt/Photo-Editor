@@ -1,18 +1,8 @@
-
-
-
-# TODO:
-# Make 'File' options
-# -New(Place photo)
-# -Save
-# -Restore
-# -Undo
-# -Red0
-
-import tkinter as tk
 from tkinter import ttk,filedialog,messagebox  # Extra components from tkinter (Nicer than the default)
 from tkinter import *
 import os
+from tkinter.filedialog import asksaveasfilename
+
 from PIL import Image
 import ctypes
 from PIL import ImageTk
@@ -26,15 +16,6 @@ from Functions import *
 from PIL import ImageDraw
 from collections import *
 
-
-
-
-
-def newFile():
-    filedialog.askopenfile(mode='rb', title='Choose a file')
-
-def saveFile():
-    print("Save")
 def restoreFile():
     print("Restore")
 def undoFile():
@@ -54,6 +35,11 @@ def displayHelp():
                                     "\tOpacity- Change how Opaque the image is\n" +
                                     "\tFilters- Apply custom, default filters\n"
                         )
+def saveImage(canvas):
+    if canvas.data.image != None:
+        filename = asksaveasfilename(defaultextension=".jpg")
+        im = canvas.data.image
+        im.save(filename)
 
 def newImage(canvas):
     imageName = filedialog.askopenfilename()
@@ -74,6 +60,7 @@ def newImage(canvas):
         canvas.data.imageSize = im.size  # Original Image dimensions
         canvas.data.imageForTk = makeImageForTk(canvas)
         drawImage(canvas)
+        return canvas.data.originalImage
     else:
         messagebox.showinfo(title="Image File", \
                               message="Choose an Image File!", parent=canvas.data.mainWindow)
@@ -107,3 +94,4 @@ def makeImageForTk(canvas):
         # we may need to refer to ther resized image atttributes again
         canvas.data.resizedIm = resizedImage
         return ImageTk.PhotoImage(resizedImage)
+

@@ -48,11 +48,11 @@ def initMenuBar():
     menubar.add_cascade(label="File", menu=fileButton)
     fileButton.menu = Menu(fileButton, tearoff=0)
     fileButton.add_command(label="New", command=lambda: newImage(canvas))
-    fileButton.add_command(label="Save")
+    fileButton.add_command(label="Save", command=lambda: saveImage(canvas))
     fileButton.add_command(label="Restore")
     fileButton.add_command(label="Undo")
     fileButton.add_command(label="Redo")
-    menubar.add_command(label="Help",command=lambda: displayHelp())
+    menubar.add_command(label="Help", command=lambda: displayHelp())
     root.config(menu=menubar)
 
 

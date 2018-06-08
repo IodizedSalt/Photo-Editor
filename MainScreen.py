@@ -20,10 +20,10 @@ class Frames:
 root.grid_rowconfigure(1, weight=1)
 
 #Formatting all section Frames into the main Frame
-Frames.ToolBar.grid(row=0,column=0, sticky=W, columnspan=5)
-Frames.ToolBox.grid(row=1,column=0, sticky=E, padx=100)
-Frames.Canvas.grid(row=1,column= 1, sticky=N, padx=100)
-Frames.PhotoBox.grid(row=1,column=2, sticky=E, padx=100)
+Frames.ToolBar.grid(row=0, column=0, sticky=W, columnspan=5)
+Frames.ToolBox.grid(row=1, column=0, sticky=E, padx=100)
+Frames.Canvas.grid(row=1, column= 1, sticky=N, padx=100)
+Frames.PhotoBox.grid(row=1, column=2, sticky=E, padx=100)
 
 #File/Help Toolbar in top left
 class ToolBar:
@@ -45,8 +45,8 @@ class ToolBar:
 #ToolBox section for physical alterations to images
 class ToolBox:
     toolBoxLabel = ttk.Label(Frames.ToolBox, text="Toolbox")
-    cropButton = ttk.Button(Frames.ToolBox, text="Crop")
-    rotateButton = ttk.Button(Frames.ToolBox, text="Rotate")
+    cropButton = ttk.Button(Frames.ToolBox, text="Crop", width=15)
+    rotateButton = ttk.Button(Frames.ToolBox, text="Rotate", width=15)
 
     toolBoxLabel.grid(row=2, column=1, pady=10)
     cropButton.grid(row=3, column=1, pady=10)
@@ -72,8 +72,9 @@ class PhotoBox:
 
 
     colourBoxLabel = ttk.Label(Frames.PhotoBox, text="Colourbox")
-    exposureButton = ttk.Button(Frames.PhotoBox, text="Exposure")
-    saturationButton = ttk.Button(Frames.PhotoBox, text="Saturation")
+
+    exposureButton = ttk.Button(Frames.PhotoBox, text="Exposure", width=15)
+    saturationButton = ttk.Button(Frames.PhotoBox, text="Saturation", width=15)
     opacityLabel = ttk.Label(Frames.PhotoBox, textvariable=slider)
     opacityScale = ttk.Scale(Frames.PhotoBox, from_=0, to=100,
         command=lambda s:slider.set('%0.0f' % float(s) + "% Opacity"))
