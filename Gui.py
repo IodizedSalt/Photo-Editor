@@ -10,6 +10,7 @@ import imghdr
 from Functions import *
 from PIL import ImageDraw
 from collections import *
+import Filters as Filter
 
 # create the root and the canvas
 root = Tk()
@@ -63,11 +64,10 @@ def initMenuBar():
 
 def initLeftKit():
     toolBoxLabel = Label(toolKitFrame, text="Toolbox")
-    cropButton = Button(toolKitFrame, text="Crop", \
-                        background=backgroundColour, \
+    cropButton = Button(toolKitFrame, text="Crop",
+                        background=backgroundColour,
                         width=buttonWidth, height=buttonHeight)
-    rotateButton = Button(toolKitFrame, text="Rotate", \
-                          background=backgroundColour, \
+    rotateButton = Button(toolKitFrame, text="Rotate", background=backgroundColour,
                           width=buttonWidth, height=buttonHeight, command=lambda: rotate(canvas))
 
     toolBoxLabel.grid(row=2, column=1, padx=80, pady=10, sticky=NE)
@@ -77,24 +77,45 @@ def initLeftKit():
 
 def initRightKit():
     colourBoxLabel = Label(photoKitFrame, text="Colourbox")
-    exposureButton = Button(photoKitFrame, text="Exposure", \
-                            background=backgroundColour, \
-                            width=buttonWidth, height=buttonHeight, command=lambda: changeBrightness(canvas))
-    saturationButton = Button(photoKitFrame, text="Saturation", \
-                              background=backgroundColour, \
+    exposureButton = Button(photoKitFrame, text="Exposure", background=backgroundColour, width=buttonWidth,
+                            height=buttonHeight, command=lambda: changeBrightness(canvas))
+    saturationButton = Button(photoKitFrame, text="Saturation", background=backgroundColour,
                               width=buttonWidth, height=buttonHeight, command=lambda: changeSaturation(canvas))
 
-    # opacityLabel = ttk.Label(photoKitFrame, textvariable=slider)
-    # opacityScale = ttk.Scale(photoKitFrame, from_=0, to=100,
-    #                          command=lambda s: slider.set('%0.0f' % float(s) + "% Opacity"))
-    filterBox = ttk.Combobox(photoKitFrame)
+    filterBox = ttk.Combobox(photoKitFrame, state="readonly")
+    applyFilter = Button(photoKitFrame, text="Apply Filter", background=backgroundColour, width=buttonWidth,
+                         height=buttonHeight, command=lambda: setPhotoFilter(canvas))
+    filterBox.set("Filters")
+
+    list = ["None", "Greyscale", "Sepia", "Inverted", "Posterize"]
+
+    filterBox['values'] = list
+
+    def setPhotoFilter(canvas):
+        filter = filterBox.get()
+        denial = FALSE  # prevents reapplying same filter multiple times   --- can be removed if we fix greyscale + sepia stacking
+        if filter == "None":
+            Filter.none(canvas)
+            denial == FALSE
+        elif filter == "Greyscale" and denial == FALSE:
+            Filter.greyscale(canvas)
+            denial == TRUE
+        elif filter == "Sepia" and denial == FALSE:
+            Filter.sepia(canvas)
+            denial == TRUE
+        elif filter == "Inverted" and denial == FALSE:
+            Filter.invert(canvas)
+            denial == TRUE
+        elif filter == "Posterize" and denial == FALSE:
+            Filter.posterize(canvas)
+            denial == TRUE
 
     colourBoxLabel.grid(row=2, column=1, padx=70, pady=10, sticky=NW)
     exposureButton.grid(row=3, column=1, padx=50, pady=10, sticky=W)
     saturationButton.grid(row=4, column=1, padx=50, pady=10, sticky=W)
-    # opacityLabel.grid(row=5, column=1)
-    # opacityScale.grid(row=6, column=1, pady=10)
+
     filterBox.grid(row=7, column=1, padx=50, pady=10, sticky=W)
+    applyFilter.grid(row=8, column=1, padx=50, pady=10, sticky=W)
 
     canvas.data.image = None
     canvas.data.brightnessWindowClose = False

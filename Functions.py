@@ -190,6 +190,7 @@ def redo(canvas):
     canvas.data.imageForTk = makeImageForTk(canvas)
     drawImage(canvas)
 
+
 #-------KEY BINDINGS-----------#
 
 def keyPressed(canvas, event):
