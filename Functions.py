@@ -1,4 +1,4 @@
-from tkinter import ttk,filedialog,messagebox  # Extra components from tkinter (Nicer than the default)
+from tkinter import ttk, filedialog, messagebox  # Extra components from tkinter (Nicer than the default)
 from tkinter import *
 import os
 from tkinter.filedialog import asksaveasfilename
@@ -15,34 +15,33 @@ import imghdr
 from Functions import *
 from PIL import ImageDraw
 from collections import *
+
 def restoreImage(canvas):
     canvas.data.image = canvas.data.originalImage
     canvas.data.imageForTk = makeImageForTk(canvas)
     drawImage(canvas)
-
-
-def undoFile():
-    print("Undo")
-def redoFile():
-    print("Redo")
+    canvas.data.undoQueue.append(canvas.data.image.copy())
 
 def displayHelp():
     messagebox.showinfo("Help", "Made by some stupid Geniuses\n\n\n\n" +
-                                "File- Gives some options\n\n\n"+
-                                "ToolBox- Physical Alterations\n\n"+
-                                    "\tCrop- Remove portions from an image\n"
-                                    "\tRotate- Rotate an image 90°\n\n\n"+
-                                "ColourBox- Digital Alterations\n\n"+
-                                    "\tExposure- Increase Exposure of the image\n"
-                                    "\tSaturate- Saturate the Image\n" +
-                                    "\tOpacity- Change how Opaque the image is\n" +
-                                    "\tFilters- Apply custom, default filters\n"
+                        "File- Gives some options\n\n\n" +
+                        "ToolBox- Physical Alterations\n\n" +
+                        "\tCrop- Remove portions from an image\n"
+                        "\tRotate- Rotate an image 90°\n\n\n" +
+                        "ColourBox- Digital Alterations\n\n" +
+                        "\tExposure- Increase Exposure of the image\n"
+                        "\tSaturate- Saturate the Image\n" +
+                        "\tOpacity- Change how Opaque the image is\n" +
+                        "\tFilters- Apply custom, default filters\n"
                         )
+
+
 def saveImage(canvas):
     if canvas.data.image != None:
         filename = asksaveasfilename(defaultextension=".jpg")
         im = canvas.data.image
         im.save(filename)
+
 
 def newImage(canvas):
     imageName = filedialog.askopenfilename()
@@ -52,7 +51,7 @@ def newImage(canvas):
         filetype = imghdr.what(imageName)
     except:
         messagebox.showinfo(title="Image File", \
-                              message="Choose an Image File!", parent=canvas.data.mainWindow)
+                            message="Choose an Image File!", parent=canvas.data.mainWindow)
     # restrict filetypes to .jpg, .bmp, etc.
     if filetype in ['jpeg', 'bmp', 'png', 'tiff']:
         canvas.data.imageLocation = imageName
@@ -64,11 +63,14 @@ def newImage(canvas):
         canvas.data.imageSize = im.size  # Original Image dimensions
         canvas.data.imageForTk = makeImageForTk(canvas)
         drawImage(canvas)
+        canvas.data.undoQueue.append(canvas.data.image.copy())
         return canvas.data.originalImage
     else:
         messagebox.showinfo(title="Image File", \
-                              message="Choose an Image File!", parent=canvas.data.mainWindow)
-def drawImage(canvas):  
+                            message="Choose an Image File!", parent=canvas.data.mainWindow)
+
+
+def drawImage(canvas):
     if canvas.data.image != None:
         # make the canvas center and the image center the same
         canvas.create_image(canvas.data.width / 2.0 - canvas.data.resizedIm.size[0] / 2.0,
@@ -99,18 +101,21 @@ def makeImageForTk(canvas):
         canvas.data.resizedIm = resizedImage
         return ImageTk.PhotoImage(resizedImage)
 
+
 def rotate(canvas):
     im = canvas.data.image
     copyim = im.rotate(90, expand=True)
     canvas.data.image = copyim
     canvas.data.imageForTk = makeImageForTk(canvas)
     drawImage(canvas)
+    canvas.data.undoQueue.append(canvas.data.image.copy())
+
 
 def changeBrightness(canvas):
     brightnessWindow = Toplevel(canvas.data.mainWindow)
     brightnessWindow.title("Brightness")
-    brightnessUp = Button(brightnessWindow,command=lambda: changeBrightnessUp(canvas),text="+")
-    brightnessDown = Button(brightnessWindow,command=lambda: changeBrightnessDown(canvas),text="-")
+    brightnessUp = Button(brightnessWindow, command=lambda: changeBrightnessUp(canvas), text="+")
+    brightnessDown = Button(brightnessWindow, command=lambda: changeBrightnessDown(canvas), text="-")
     brightnessUp.pack()
     brightnessDown.pack()
 
@@ -122,6 +127,8 @@ def changeBrightnessUp(canvas):
     canvas.data.image = copyim
     canvas.data.imageForTk = makeImageForTk(canvas)
     drawImage(canvas)
+    canvas.data.undoQueue.append(canvas.data.image.copy())
+
 
 def changeBrightnessDown(canvas):
     im = canvas.data.image
@@ -130,3 +137,32 @@ def changeBrightnessDown(canvas):
     canvas.data.image = copyim
     canvas.data.imageForTk = makeImageForTk(canvas)
     drawImage(canvas)
+    canvas.data.undoQueue.append(canvas.data.image.copy())
+
+
+def undo(canvas):
+    if len(canvas.data.undoQueue) > 0:
+        lastImage = canvas.data.undoQueue.pop()
+        canvas.data.redoQueue.appendleft(lastImage)
+    if len(canvas.data.undoQueue) > 0:
+        canvas.data.image = canvas.data.undoQueue[-1]
+    canvas.data.imageForTk = makeImageForTk(canvas)
+    drawImage(canvas)
+
+
+def redo(canvas):
+    if len(canvas.data.redoQueue) > 0:
+        canvas.data.image = canvas.data.redoQueue[0]
+    if len(canvas.data.redoQueue) > 0:
+        # we remove this version from the Redo Deque beacuase it
+        # has become our current image
+        lastImage = canvas.data.redoQueue.popleft()
+        canvas.data.undoQueue.append(lastImage)
+    canvas.data.imageForTk = makeImageForTk(canvas)
+    drawImage(canvas)
+
+#-------KEY BINDINGS-----------#
+
+def keyPressed(canvas, event):
+    if event.keysym=="Escape":
+        sys.exit()

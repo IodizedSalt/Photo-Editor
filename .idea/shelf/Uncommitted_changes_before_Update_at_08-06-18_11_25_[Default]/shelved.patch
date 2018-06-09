@@ -1,0 +1,443 @@
+Index: GuiFunctions.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- GuiFunctions.py	(date 1528449214915)
++++ GuiFunctions.py	(date 1528449214915)
+@@ -0,0 +1,0 @@
+Index: MainScreen.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from tkinter import *\nimport tkinter as tk\nfrom tkinter import ttk,filedialog  # Extra components from tkinter (Nicer than the default)\nfrom PIL import Image, ImageTk\nfrom Functions import *\n\nroot = Tk()  # Initialize tkinter root widget.\n\nroot.title(\"Photo Editor\")\nroot.state('zoomed')  # Makes Fullscreen\n\n#Dividing sections into frames and adding to MainApplication Frame\nclass Frames:\n    ToolBar = Frame(root)\n    ToolBox = Frame(root)\n    Canvas = Frame(root)\n    PhotoBox = Frame(root)\n\n#Formatting Row 1 to distribute space between rows\nroot.grid_rowconfigure(1, weight=1)\n\n#Formatting all section Frames into the main Frame\nFrames.ToolBar.grid(row=0,column=0, sticky=W, columnspan=5)\nFrames.ToolBox.grid(row=1,column=0, sticky=E, padx=100)\nFrames.Canvas.grid(row=1,column= 1, sticky=N, padx=100)\nFrames.PhotoBox.grid(row=1,column=2, sticky=E, padx=100)\n\n#File/Help Toolbar in top left\nclass ToolBar:\n    fileButton = ttk.Menubutton(Frames.ToolBar, text=\"File\")\n\n    fileButton.menu = Menu(fileButton, tearoff=FALSE)\n    fileButton[\"menu\"] = fileButton.menu\n    fileButton.menu.add_command(label=\"New\", command=newFile)\n    fileButton.menu.add_command(label=\"Save\", command=saveFile)\n    fileButton.menu.add_command(label=\"Restore\", command=restoreFile)\n    fileButton.menu.add_command(label=\"Undo\", command=undoFile)\n    fileButton.menu.add_command(label=\"Redo\", command=redoFile)\n\n    helpButton = ttk.Button(Frames.ToolBar, text=\"Help\", command=displayHelp)\n\n    fileButton.grid(row=0, column=0)\n    helpButton.grid(row=0, column=1)\n\n#ToolBox section for physical alterations to images\nclass ToolBox:\n    toolBoxLabel = ttk.Label(Frames.ToolBox, text=\"Toolbox\")\n    cropButton = ttk.Button(Frames.ToolBox, text=\"Crop\")\n    rotateButton = ttk.Button(Frames.ToolBox, text=\"Rotate\")\n\n    toolBoxLabel.grid(row=2, column=1, pady=10)\n    cropButton.grid(row=3, column=1, pady=10)\n    rotateButton.grid(row=4, column=1, pady=10)\n\n#Canvas section for the image\nclass Canvas:\n    openImage = Image.open(\"assets/Transparent.jpg\")\n    img = ImageTk.PhotoImage(openImage)\n\n    transparentBackground = Label(Frames.Canvas, image=img)\n    transparentBackground.grid(row=1, column=2)\n\n    Frames.Canvas.grid_rowconfigure(0, weight=1)\n    Frames.Canvas.grid_columnconfigure(1, weight=1)\n\n#PhotoBox opacity slider\nslider = tk.StringVar()\nslider.set((\"0% Opacity\"))\n\n#PhotoBox section for digital alterations to images\nclass PhotoBox:\n\n\n    colourBoxLabel = ttk.Label(Frames.PhotoBox, text=\"Colourbox\")\n    exposureButton = ttk.Button(Frames.PhotoBox, text=\"Exposure\")\n    saturationButton = ttk.Button(Frames.PhotoBox, text=\"Saturation\")\n    opacityLabel = ttk.Label(Frames.PhotoBox, textvariable=slider)\n    opacityScale = ttk.Scale(Frames.PhotoBox, from_=0, to=100,\n        command=lambda s:slider.set('%0.0f' % float(s) + \"% Opacity\"))\n    filterBox = ttk.Combobox(Frames.PhotoBox)\n\n    colourBoxLabel.grid(row=2, column=1, pady=10)\n    exposureButton.grid(row=3, column=1, pady=10)\n    saturationButton.grid(row=4, column=1, pady=10)\n    opacityLabel.grid(row=5, column=2)\n    opacityScale.grid(row=5, column=1, pady=10)\n    filterBox.grid(row=6, column=1, pady=10)\n\n# -----------------------------------------------------------------------------\n# -----------------------------------------------------------------------------\n# -----------------------------------------------------------------------------\n\nroot.mainloop()\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- MainScreen.py	(revision 54657998d0a597524b8b96a0680221aee9ee6c3b)
++++ MainScreen.py	(date 1528449235771)
+@@ -20,10 +20,10 @@
+ root.grid_rowconfigure(1, weight=1)
+ 
+ #Formatting all section Frames into the main Frame
+-Frames.ToolBar.grid(row=0,column=0, sticky=W, columnspan=5)
+-Frames.ToolBox.grid(row=1,column=0, sticky=E, padx=100)
+-Frames.Canvas.grid(row=1,column= 1, sticky=N, padx=100)
+-Frames.PhotoBox.grid(row=1,column=2, sticky=E, padx=100)
++Frames.ToolBar.grid(row=0, column=0, sticky=W, columnspan=5)
++Frames.ToolBox.grid(row=1, column=0, sticky=E, padx=100)
++Frames.Canvas.grid(row=1, column= 1, sticky=N, padx=100)
++Frames.PhotoBox.grid(row=1, column=2, sticky=E, padx=100)
+ 
+ #File/Help Toolbar in top left
+ class ToolBar:
+@@ -45,8 +45,8 @@
+ #ToolBox section for physical alterations to images
+ class ToolBox:
+     toolBoxLabel = ttk.Label(Frames.ToolBox, text="Toolbox")
+-    cropButton = ttk.Button(Frames.ToolBox, text="Crop")
+-    rotateButton = ttk.Button(Frames.ToolBox, text="Rotate")
++    cropButton = ttk.Button(Frames.ToolBox, text="Crop", width=15)
++    rotateButton = ttk.Button(Frames.ToolBox, text="Rotate", width=15)
+ 
+     toolBoxLabel.grid(row=2, column=1, pady=10)
+     cropButton.grid(row=3, column=1, pady=10)
+@@ -72,8 +72,9 @@
+ 
+ 
+     colourBoxLabel = ttk.Label(Frames.PhotoBox, text="Colourbox")
+-    exposureButton = ttk.Button(Frames.PhotoBox, text="Exposure")
+-    saturationButton = ttk.Button(Frames.PhotoBox, text="Saturation")
++
++    exposureButton = ttk.Button(Frames.PhotoBox, text="Exposure", width=15)
++    saturationButton = ttk.Button(Frames.PhotoBox, text="Saturation", width=15)
+     opacityLabel = ttk.Label(Frames.PhotoBox, textvariable=slider)
+     opacityScale = ttk.Scale(Frames.PhotoBox, from_=0, to=100,
+         command=lambda s:slider.set('%0.0f' % float(s) + "% Opacity"))
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"1397a676-7994-409b-b8aa-b0214e88fa52\" name=\"Default\" comment=\"\">\n      <change afterPath=\"$PROJECT_DIR$/Gui.py\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/PythonMandatory.iml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/PythonMandatory.iml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/misc.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/MainScreen.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/MainScreen.py\" afterDir=\"false\" />\n    </list>\n    <option name=\"EXCLUDED_CONVERTED_TO_IGNORED\" value=\"true\" />\n    <option name=\"TRACKING_ENABLED\" value=\"true\" />\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"CoverageDataManager\">\n    <SUITE FILE_PATH=\"coverage/PythonMandatory$Functions.coverage\" NAME=\"Functions Coverage Results\" MODIFIED=\"1528382356168\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"true\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/Photo_Editor$MainScreen.coverage\" NAME=\"MainScreen Coverage Results\" MODIFIED=\"1528447963324\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"true\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/Photo_Editor$Gui.coverage\" NAME=\"Gui Coverage Results\" MODIFIED=\"1528447939795\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"true\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/PythonMandatory$MainScreen.coverage\" NAME=\"MainScreen Coverage Results\" MODIFIED=\"1528382473209\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"true\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"FileEditorManager\">\n    <leaf SIDE_TABS_SIZE_LIMIT_KEY=\"300\">\n      <file leaf-file-name=\"MainScreen.py\" pinned=\"false\" current-in-tab=\"true\">\n        <entry file=\"file://$PROJECT_DIR$/MainScreen.py\">\n          <provider selected=\"true\" editor-type-id=\"text-editor\">\n            <state relative-caret-position=\"105\">\n              <caret line=\"7\" lean-forward=\"true\" selection-start-line=\"9\" selection-end-line=\"10\" />\n              <folding>\n                <element signature=\"e#0#21#0\" expanded=\"true\" />\n              </folding>\n            </state>\n          </provider>\n        </entry>\n      </file>\n      <file leaf-file-name=\"Gui.py\" pinned=\"false\" current-in-tab=\"false\">\n        <entry file=\"file://$PROJECT_DIR$/Gui.py\">\n          <provider selected=\"true\" editor-type-id=\"text-editor\">\n            <state relative-caret-position=\"210\">\n              <caret line=\"14\" lean-forward=\"true\" selection-start-line=\"14\" selection-end-line=\"14\" />\n              <folding>\n                <element signature=\"e#0#21#0\" expanded=\"true\" />\n              </folding>\n            </state>\n          </provider>\n        </entry>\n      </file>\n      <file leaf-file-name=\"Functions.py\" pinned=\"false\" current-in-tab=\"false\">\n        <entry file=\"file://$PROJECT_DIR$/Functions.py\">\n          <provider selected=\"true\" editor-type-id=\"text-editor\">\n            <state relative-caret-position=\"405\">\n              <caret line=\"28\" column=\"73\" selection-start-line=\"28\" selection-start-column=\"73\" selection-end-line=\"28\" selection-end-column=\"73\" />\n              <folding>\n                <element signature=\"e#86#106#0\" expanded=\"true\" />\n              </folding>\n            </state>\n          </provider>\n        </entry>\n      </file>\n    </leaf>\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Python Script\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"IdeDocumentHistory\">\n    <option name=\"CHANGED_PATHS\">\n      <list>\n        <option value=\"$PROJECT_DIR$/FullScreen.py\" />\n        <option value=\"$PROJECT_DIR$/Functions.py\" />\n        <option value=\"$PROJECT_DIR$/Gui.py\" />\n        <option value=\"$PROJECT_DIR$/MainScreen.py\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"JsBuildToolGruntFileManager\" detection-done=\"true\" sorting=\"DEFINITION_ORDER\" />\n  <component name=\"JsBuildToolPackageJson\" detection-done=\"true\" sorting=\"DEFINITION_ORDER\" />\n  <component name=\"JsGulpfileManager\">\n    <detection-done>true</detection-done>\n    <sorting>DEFINITION_ORDER</sorting>\n  </component>\n  <component name=\"NodePackageJsonFileManager\">\n    <packageJsonPaths />\n  </component>\n  <component name=\"ProjectFrameBounds\" extendedState=\"6\">\n    <option name=\"x\" value=\"503\" />\n    <option name=\"y\" value=\"46\" />\n    <option name=\"width\" value=\"663\" />\n    <option name=\"height\" value=\"543\" />\n  </component>\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\n  <component name=\"ProjectView\">\n    <navigator proportions=\"\" version=\"1\">\n      <foldersAlwaysOnTop value=\"true\" />\n    </navigator>\n    <panes>\n      <pane id=\"Scope\" />\n      <pane id=\"ProjectPane\">\n        <subPane>\n          <expand>\n            <path>\n              <item name=\"Photo-Editor\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"Photo-Editor\" type=\"462c0819:PsiDirectoryNode\" />\n            </path>\n            <path>\n              <item name=\"Photo-Editor\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"External Libraries\" type=\"cb654da1:ExternalLibrariesNode\" />\n            </path>\n          </expand>\n          <select />\n        </subPane>\n      </pane>\n    </panes>\n  </component>\n  <component name=\"PropertiesComponent\">\n    <property name=\"SearchEverywhereHistoryKey\" value=\"&#9;FILE&#9;file://C:/Users/Chris/Desktop/School/PythonMandatory/assets/Transparent.jpg\" />\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\n    <property name=\"nodejs_interpreter_path.stuck_in_default_project\" value=\"undefined stuck path\" />\n    <property name=\"nodejs_npm_path_reset_for_default_project\" value=\"true\" />\n    <property name=\"settings.editor.selected.configurable\" value=\"com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable\" />\n  </component>\n  <component name=\"RecentsManager\">\n    <key name=\"MoveFile.RECENT_KEYS\">\n      <recent name=\"C:\\Users\\Chris\\Desktop\\School\\PythonMandatory\\assets\" />\n      <recent name=\"C:\\Users\\Chris\\Desktop\\School\\PythonMandatory\" />\n    </key>\n  </component>\n  <component name=\"RunDashboard\">\n    <option name=\"ruleStates\">\n      <list>\n        <RuleState>\n          <option name=\"name\" value=\"ConfigurationTypeDashboardGroupingRule\" />\n        </RuleState>\n        <RuleState>\n          <option name=\"name\" value=\"StatusDashboardGroupingRule\" />\n        </RuleState>\n      </list>\n    </option>\n  </component>\n  <component name=\"RunManager\" selected=\"Python.MainScreen\">\n    <configuration name=\"Functions\" type=\"PythonConfigurationType\" factoryName=\"Python\" temporary=\"true\">\n      <module name=\"PythonMandatory\" />\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\n      <option name=\"PARENT_ENVS\" value=\"true\" />\n      <envs>\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\n      </envs>\n      <option name=\"SDK_HOME\" value=\"\" />\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\n      <EXTENSION ID=\"PythonCoverageRunConfigurationExtension\" runner=\"coverage.py\" />\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/Functions.py\" />\n      <option name=\"PARAMETERS\" value=\"\" />\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\n      <option name=\"MODULE_MODE\" value=\"false\" />\n    </configuration>\n    <configuration name=\"Gui\" type=\"PythonConfigurationType\" factoryName=\"Python\" temporary=\"true\">\n      <module name=\"PythonMandatory\" />\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\n      <option name=\"PARENT_ENVS\" value=\"true\" />\n      <envs>\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\n      </envs>\n      <option name=\"SDK_HOME\" value=\"\" />\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\n      <EXTENSION ID=\"PythonCoverageRunConfigurationExtension\" runner=\"coverage.py\" />\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/Gui.py\" />\n      <option name=\"PARAMETERS\" value=\"\" />\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\n      <option name=\"MODULE_MODE\" value=\"false\" />\n    </configuration>\n    <configuration name=\"MainScreen\" type=\"PythonConfigurationType\" factoryName=\"Python\" temporary=\"true\">\n      <module name=\"PythonMandatory\" />\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\n      <option name=\"PARENT_ENVS\" value=\"true\" />\n      <envs>\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\n      </envs>\n      <option name=\"SDK_HOME\" value=\"\" />\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\n      <EXTENSION ID=\"PythonCoverageRunConfigurationExtension\" runner=\"coverage.py\" />\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/MainScreen.py\" />\n      <option name=\"PARAMETERS\" value=\"\" />\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\n      <option name=\"MODULE_MODE\" value=\"false\" />\n    </configuration>\n    <list>\n      <item itemvalue=\"Python.MainScreen\" />\n      <item itemvalue=\"Python.Functions\" />\n      <item itemvalue=\"Python.Gui\" />\n    </list>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Python.MainScreen\" />\n        <item itemvalue=\"Python.Gui\" />\n        <item itemvalue=\"Python.Functions\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SvnConfiguration\">\n    <configuration />\n  </component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"1397a676-7994-409b-b8aa-b0214e88fa52\" name=\"Default\" comment=\"\" />\n      <created>1528194442094</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1528194442094</updated>\n    </task>\n    <servers />\n  </component>\n  <component name=\"ToolWindowManager\">\n    <frame x=\"0\" y=\"0\" width=\"1366\" height=\"725\" extended-state=\"6\" />\n    <editor active=\"true\" />\n    <layout>\n      <window_info anchor=\"bottom\" id=\"TODO\" order=\"6\" />\n      <window_info anchor=\"bottom\" id=\"Event Log\" order=\"7\" side_tool=\"true\" />\n      <window_info anchor=\"bottom\" id=\"Database Changes\" order=\"7\" show_stripe_button=\"false\" />\n      <window_info active=\"true\" anchor=\"bottom\" id=\"Run\" order=\"2\" visible=\"true\" weight=\"0.32991454\" />\n      <window_info anchor=\"bottom\" id=\"Version Control\" order=\"7\" weight=\"0.32897604\" />\n      <window_info anchor=\"bottom\" id=\"Python Console\" order=\"7\" weight=\"0.32897604\" />\n      <window_info anchor=\"bottom\" id=\"Terminal\" order=\"7\" weight=\"0.32570806\" />\n      <window_info content_ui=\"combo\" id=\"Project\" order=\"0\" visible=\"true\" weight=\"0.11666667\" />\n      <window_info anchor=\"bottom\" id=\"Docker\" order=\"7\" show_stripe_button=\"false\" />\n      <window_info anchor=\"right\" id=\"Database\" order=\"3\" />\n      <window_info anchor=\"right\" id=\"SciView\" order=\"4\" />\n      <window_info id=\"Structure\" order=\"1\" side_tool=\"true\" weight=\"0.25\" />\n      <window_info anchor=\"bottom\" id=\"Debug\" order=\"3\" weight=\"0.39933994\" />\n      <window_info id=\"Favorites\" order=\"2\" side_tool=\"true\" />\n      <window_info anchor=\"right\" content_ui=\"combo\" id=\"Hierarchy\" order=\"2\" weight=\"0.25\" />\n      <window_info anchor=\"bottom\" id=\"Inspection\" order=\"5\" weight=\"0.4\" />\n      <window_info anchor=\"right\" id=\"Commander\" order=\"0\" weight=\"0.4\" />\n      <window_info anchor=\"right\" id=\"Ant Build\" order=\"1\" weight=\"0.25\" />\n      <window_info anchor=\"right\" x=\"0\" y=\"0\" width=\"434\" height=\"856\" id=\"Documentation\" order=\"5\" side_tool=\"true\" weight=\"0.32889125\" />\n      <window_info anchor=\"bottom\" id=\"Message\" order=\"0\" />\n      <window_info anchor=\"bottom\" id=\"Cvs\" order=\"4\" weight=\"0.25\" />\n      <window_info anchor=\"bottom\" id=\"Find\" order=\"1\" />\n    </layout>\n    <layout-to-restore>\n      <window_info anchor=\"bottom\" id=\"Message\" order=\"0\" />\n      <window_info anchor=\"right\" content_ui=\"combo\" id=\"Hierarchy\" order=\"2\" weight=\"0.25\" />\n      <window_info anchor=\"bottom\" id=\"Docker\" order=\"7\" show_stripe_button=\"false\" />\n      <window_info active=\"true\" anchor=\"bottom\" id=\"Run\" order=\"2\" visible=\"true\" weight=\"0.33115467\" />\n      <window_info anchor=\"bottom\" id=\"Cvs\" order=\"4\" weight=\"0.25\" />\n      <window_info id=\"Favorites\" order=\"2\" side_tool=\"true\" />\n      <window_info content_ui=\"combo\" id=\"Project\" order=\"0\" visible=\"true\" weight=\"0.11727079\" />\n      <window_info id=\"Structure\" order=\"1\" side_tool=\"true\" weight=\"0.25\" />\n      <window_info anchor=\"right\" id=\"Commander\" order=\"0\" weight=\"0.4\" />\n      <window_info anchor=\"right\" id=\"Ant Build\" order=\"1\" weight=\"0.25\" />\n      <window_info anchor=\"bottom\" id=\"TODO\" order=\"6\" />\n      <window_info anchor=\"bottom\" id=\"Inspection\" order=\"5\" weight=\"0.4\" />\n      <window_info anchor=\"bottom\" id=\"Debug\" order=\"3\" weight=\"0.39933994\" />\n      <window_info anchor=\"right\" x=\"0\" y=\"0\" width=\"434\" height=\"856\" id=\"Documentation\" order=\"5\" side_tool=\"true\" weight=\"0.32889125\" />\n      <window_info anchor=\"right\" id=\"Database\" order=\"3\" />\n      <window_info anchor=\"bottom\" id=\"Terminal\" order=\"11\" weight=\"0.32570806\" />\n      <window_info anchor=\"bottom\" id=\"Event Log\" order=\"12\" side_tool=\"true\" />\n      <window_info anchor=\"bottom\" id=\"Database Changes\" order=\"9\" show_stripe_button=\"false\" />\n      <window_info anchor=\"bottom\" id=\"Version Control\" order=\"8\" weight=\"0.32897604\" />\n      <window_info anchor=\"right\" id=\"SciView\" order=\"4\" />\n      <window_info anchor=\"bottom\" id=\"Find\" order=\"1\" />\n      <window_info anchor=\"bottom\" id=\"Python Console\" order=\"10\" weight=\"0.32897604\" />\n    </layout-to-restore>\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"1\" />\n  </component>\n  <component name=\"UnknownFeatures\">\n    <option featureType=\"com.intellij.fileTypeFactory\" implementationName=\"*.md\" />\n  </component>\n  <component name=\"VcsContentAnnotationSettings\">\n    <option name=\"myLimit\" value=\"2678400000\" />\n  </component>\n  <component name=\"XDebuggerManager\">\n    <breakpoint-manager>\n      <option name=\"time\" value=\"1\" />\n    </breakpoint-manager>\n  </component>\n  <component name=\"editorHistoryManager\">\n    <entry file=\"file://$PROJECT_DIR$/MainScreen.py\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"975\">\n          <caret line=\"69\" column=\"25\" selection-start-line=\"44\" selection-start-column=\"51\" selection-end-line=\"45\" selection-end-column=\"14\" />\n          <folding>\n            <element signature=\"e#0#21#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/Functions.py\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"405\">\n          <caret line=\"28\" column=\"73\" selection-start-line=\"28\" selection-start-column=\"73\" selection-end-line=\"28\" selection-end-column=\"73\" />\n          <folding>\n            <element signature=\"e#86#106#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/README.md\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/assets/Transparent.jpg\">\n      <provider selected=\"true\" editor-type-id=\"images\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/MainScreen.py\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"308\">\n          <caret line=\"14\" column=\"45\" selection-start-line=\"14\" selection-start-column=\"45\" selection-end-line=\"14\" selection-end-column=\"45\" />\n          <folding>\n            <element signature=\"e#0#21#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/README.md\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/assets/Transparent.jpg\">\n      <provider selected=\"true\" editor-type-id=\"images\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/MainScreen.py\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"506\">\n          <caret line=\"23\" column=\"42\" selection-start-line=\"23\" selection-start-column=\"42\" selection-end-line=\"23\" selection-end-column=\"42\" />\n          <folding>\n            <element signature=\"e#0#21#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/README.md\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/MainScreen.py\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"198\">\n          <caret line=\"9\" column=\"19\" lean-forward=\"true\" selection-start-line=\"9\" selection-start-column=\"19\" selection-end-line=\"9\" selection-end-column=\"19\" />\n          <folding>\n            <element signature=\"e#0#21#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/FullScreen.py\" />\n    <entry file=\"file://$PROJECT_DIR$/assets/Transparent.jpg\">\n      <provider selected=\"true\" editor-type-id=\"images\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/README.md\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/Functions.py\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"405\">\n          <caret line=\"28\" column=\"73\" selection-start-line=\"28\" selection-start-column=\"73\" selection-end-line=\"28\" selection-end-column=\"73\" />\n          <folding>\n            <element signature=\"e#86#106#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/Gui.py\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"210\">\n          <caret line=\"14\" lean-forward=\"true\" selection-start-line=\"14\" selection-end-line=\"14\" />\n          <folding>\n            <element signature=\"e#0#21#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/MainScreen.py\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"105\">\n          <caret line=\"7\" lean-forward=\"true\" selection-start-line=\"9\" selection-end-line=\"10\" />\n          <folding>\n            <element signature=\"e#0#21#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/workspace.xml	(revision 54657998d0a597524b8b96a0680221aee9ee6c3b)
++++ .idea/workspace.xml	(date 1528449752382)
+@@ -2,12 +2,16 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="1397a676-7994-409b-b8aa-b0214e88fa52" name="Default" comment="">
+-      <change afterPath="$PROJECT_DIR$/Gui.py" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/GuiFunctions.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/PythonMandatory.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PythonMandatory.iml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/Gui.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/MainScreen.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainScreen.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/assets/Transparent.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/Transparent.jpg" afterDir="false" />
+     </list>
++    <ignored path="C:\Users\Chris\Desktop\School\PythonMandatory\.idea\shelf/" />
+     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+     <option name="TRACKING_ENABLED" value="true" />
+     <option name="SHOW_DIALOG" value="false" />
+@@ -17,17 +21,18 @@
+   </component>
+   <component name="CoverageDataManager">
+     <SUITE FILE_PATH="coverage/PythonMandatory$Functions.coverage" NAME="Functions Coverage Results" MODIFIED="1528382356168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/PythonMandatory$Gui.coverage" NAME="Gui Coverage Results" MODIFIED="1528449751794" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/PythonMandatory$MainScreen.coverage" NAME="MainScreen Coverage Results" MODIFIED="1528449159735" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/Photo_Editor$MainScreen.coverage" NAME="MainScreen Coverage Results" MODIFIED="1528447963324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/Photo_Editor$Gui.coverage" NAME="Gui Coverage Results" MODIFIED="1528447939795" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+-    <SUITE FILE_PATH="coverage/PythonMandatory$MainScreen.coverage" NAME="MainScreen Coverage Results" MODIFIED="1528382473209" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+   </component>
+   <component name="FileEditorManager">
+     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+-      <file leaf-file-name="MainScreen.py" pinned="false" current-in-tab="true">
++      <file leaf-file-name="MainScreen.py" pinned="false" current-in-tab="false">
+         <entry file="file://$PROJECT_DIR$/MainScreen.py">
+           <provider selected="true" editor-type-id="text-editor">
+-            <state relative-caret-position="105">
+-              <caret line="7" lean-forward="true" selection-start-line="9" selection-end-line="10" />
++            <state relative-caret-position="-198">
++              <caret line="9" column="8" lean-forward="true" selection-start-line="9" selection-end-line="10" />
+               <folding>
+                 <element signature="e#0#21#0" expanded="true" />
+               </folding>
+@@ -35,25 +40,27 @@
+           </provider>
+         </entry>
+       </file>
+-      <file leaf-file-name="Gui.py" pinned="false" current-in-tab="false">
+-        <entry file="file://$PROJECT_DIR$/Gui.py">
++      <file leaf-file-name="GuiFunctions.py" pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/GuiFunctions.py">
++          <provider selected="true" editor-type-id="text-editor" />
++        </entry>
++      </file>
++      <file leaf-file-name="Functions.py" pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/Functions.py">
+           <provider selected="true" editor-type-id="text-editor">
+-            <state relative-caret-position="210">
+-              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+-              <folding>
+-                <element signature="e#0#21#0" expanded="true" />
+-              </folding>
++            <state relative-caret-position="150">
++              <caret line="14" column="18" lean-forward="true" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
+             </state>
+           </provider>
+         </entry>
+       </file>
+-      <file leaf-file-name="Functions.py" pinned="false" current-in-tab="false">
+-        <entry file="file://$PROJECT_DIR$/Functions.py">
++      <file leaf-file-name="Gui.py" pinned="false" current-in-tab="true">
++        <entry file="file://$PROJECT_DIR$/Gui.py">
+           <provider selected="true" editor-type-id="text-editor">
+-            <state relative-caret-position="405">
+-              <caret line="28" column="73" selection-start-line="28" selection-start-column="73" selection-end-line="28" selection-end-column="73" />
++            <state relative-caret-position="154">
++              <caret line="55" column="25" lean-forward="true" selection-start-line="55" selection-start-column="25" selection-end-line="55" selection-end-column="25" />
+               <folding>
+-                <element signature="e#86#106#0" expanded="true" />
++                <element signature="e#0#21#0" expanded="true" />
+               </folding>
+             </state>
+           </provider>
+@@ -68,6 +75,12 @@
+       </list>
+     </option>
+   </component>
++  <component name="FindInProjectRecents">
++    <findStrings>
++      <find>new</find>
++      <find>makeImage</find>
++    </findStrings>
++  </component>
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+@@ -75,9 +88,10 @@
+     <option name="CHANGED_PATHS">
+       <list>
+         <option value="$PROJECT_DIR$/FullScreen.py" />
++        <option value="$PROJECT_DIR$/MainScreen.py" />
+         <option value="$PROJECT_DIR$/Functions.py" />
++        <option value="$PROJECT_DIR$/GuiFunctions.py" />
+         <option value="$PROJECT_DIR$/Gui.py" />
+-        <option value="$PROJECT_DIR$/MainScreen.py" />
+       </list>
+     </option>
+   </component>
+@@ -102,22 +116,18 @@
+       <foldersAlwaysOnTop value="true" />
+     </navigator>
+     <panes>
+-      <pane id="Scope" />
+       <pane id="ProjectPane">
+         <subPane>
+           <expand>
+             <path>
+-              <item name="Photo-Editor" type="b2602c69:ProjectViewProjectNode" />
+-              <item name="Photo-Editor" type="462c0819:PsiDirectoryNode" />
+-            </path>
+-            <path>
+-              <item name="Photo-Editor" type="b2602c69:ProjectViewProjectNode" />
+-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
++              <item name="PythonMandatory" type="b2602c69:ProjectViewProjectNode" />
++              <item name="PythonMandatory" type="462c0819:PsiDirectoryNode" />
+             </path>
+           </expand>
+           <select />
+         </subPane>
+       </pane>
++      <pane id="Scope" />
+     </panes>
+   </component>
+   <component name="PropertiesComponent">
+@@ -145,7 +155,7 @@
+       </list>
+     </option>
+   </component>
+-  <component name="RunManager" selected="Python.MainScreen">
++  <component name="RunManager" selected="Python.Gui">
+     <configuration name="Functions" type="PythonConfigurationType" factoryName="Python" temporary="true">
+       <module name="PythonMandatory" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+@@ -210,8 +220,8 @@
+     </list>
+     <recent_temporary>
+       <list>
+-        <item itemvalue="Python.MainScreen" />
+         <item itemvalue="Python.Gui" />
++        <item itemvalue="Python.MainScreen" />
+         <item itemvalue="Python.Functions" />
+       </list>
+     </recent_temporary>
+@@ -230,23 +240,23 @@
+     <servers />
+   </component>
+   <component name="ToolWindowManager">
+-    <frame x="0" y="0" width="1366" height="725" extended-state="6" />
++    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+     <editor active="true" />
+     <layout>
+       <window_info anchor="bottom" id="TODO" order="6" />
+       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32991454" />
+       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32897604" />
+       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32897604" />
++      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32897604" />
+       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32570806" />
+-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11666667" />
++      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.117803834" />
+       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+       <window_info anchor="right" id="Database" order="3" />
+       <window_info anchor="right" id="SciView" order="4" />
+       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
++      <window_info id="Favorites" order="2" side_tool="true" />
+       <window_info anchor="bottom" id="Debug" order="3" weight="0.39933994" />
+-      <window_info id="Favorites" order="2" side_tool="true" />
+       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+@@ -257,28 +267,28 @@
+       <window_info anchor="bottom" id="Find" order="1" />
+     </layout>
+     <layout-to-restore>
+-      <window_info anchor="bottom" id="Message" order="0" />
+       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.33115467" />
+-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+-      <window_info id="Favorites" order="2" side_tool="true" />
++      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11727079" />
+       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+       <window_info anchor="bottom" id="TODO" order="6" />
+-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
++      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32897604" />
++      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.33115467" />
++      <window_info anchor="bottom" id="Find" order="1" />
++      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32897604" />
+       <window_info anchor="bottom" id="Debug" order="3" weight="0.39933994" />
+       <window_info anchor="right" x="0" y="0" width="434" height="856" id="Documentation" order="5" side_tool="true" weight="0.32889125" />
+       <window_info anchor="right" id="Database" order="3" />
+       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32570806" />
+       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
+       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32897604" />
++      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+       <window_info anchor="right" id="SciView" order="4" />
+-      <window_info anchor="bottom" id="Find" order="1" />
+-      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32897604" />
++      <window_info anchor="bottom" id="Message" order="0" />
++      <window_info id="Favorites" order="2" side_tool="true" />
+     </layout-to-restore>
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -296,6 +306,33 @@
+     </breakpoint-manager>
+   </component>
+   <component name="editorHistoryManager">
++    <entry file="file://$PROJECT_DIR$/MainScreen.py">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="154">
++          <caret line="7" lean-forward="true" selection-start-line="9" selection-end-line="10" />
++          <folding>
++            <element signature="e#0#21#0" expanded="true" />
++          </folding>
++        </state>
++      </provider>
++    </entry>
++    <entry file="file://$PROJECT_DIR$/Gui.py">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="44">
++          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
++          <folding>
++            <element signature="e#0#21#0" expanded="true" />
++          </folding>
++        </state>
++      </provider>
++    </entry>
++    <entry file="file://$PROJECT_DIR$/Functions.py">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="594">
++          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
++        </state>
++      </provider>
++    </entry>
+     <entry file="file://$PROJECT_DIR$/MainScreen.py">
+       <provider selected="true" editor-type-id="text-editor">
+         <state relative-caret-position="975">
+@@ -310,9 +347,6 @@
+       <provider selected="true" editor-type-id="text-editor">
+         <state relative-caret-position="405">
+           <caret line="28" column="73" selection-start-line="28" selection-start-column="73" selection-end-line="28" selection-end-column="73" />
+-          <folding>
+-            <element signature="e#86#106#0" expanded="true" />
+-          </folding>
+         </state>
+       </provider>
+     </entry>
+@@ -368,30 +402,30 @@
+     <entry file="file://$PROJECT_DIR$/README.md">
+       <provider selected="true" editor-type-id="text-editor" />
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/Functions.py">
++    <entry file="file://$PROJECT_DIR$/GuiFunctions.py">
++      <provider selected="true" editor-type-id="text-editor" />
++    </entry>
++    <entry file="file://$PROJECT_DIR$/MainScreen.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="405">
+-          <caret line="28" column="73" selection-start-line="28" selection-start-column="73" selection-end-line="28" selection-end-column="73" />
++        <state relative-caret-position="-198">
++          <caret line="9" column="8" lean-forward="true" selection-start-line="9" selection-end-line="10" />
+           <folding>
+-            <element signature="e#86#106#0" expanded="true" />
++            <element signature="e#0#21#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/Gui.py">
++    <entry file="file://$PROJECT_DIR$/Functions.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="210">
+-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+-          <folding>
+-            <element signature="e#0#21#0" expanded="true" />
+-          </folding>
++        <state relative-caret-position="150">
++          <caret line="14" column="18" lean-forward="true" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/MainScreen.py">
++    <entry file="file://$PROJECT_DIR$/Gui.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="105">
+-          <caret line="7" lean-forward="true" selection-start-line="9" selection-end-line="10" />
++        <state relative-caret-position="154">
++          <caret line="55" column="25" lean-forward="true" selection-start-line="55" selection-start-column="25" selection-end-line="55" selection-end-column="25" />
+           <folding>
+             <element signature="e#0#21#0" expanded="true" />
+           </folding>
+Index: .idea/PythonMandatory.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<module type=\"PYTHON_MODULE\" version=\"4\">\n  <component name=\"NewModuleRootManager\">\n    <content url=\"file://$MODULE_DIR$\">\n      <excludeFolder url=\"file://$MODULE_DIR$/venv\" />\n    </content>\n    <orderEntry type=\"jdk\" jdkName=\"Python 3.6 (venv)\" jdkType=\"Python SDK\" />\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\n  </component>\n  <component name=\"TestRunnerService\">\n    <option name=\"PROJECT_TEST_RUNNER\" value=\"Unittests\" />\n  </component>\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/PythonMandatory.iml	(revision 54657998d0a597524b8b96a0680221aee9ee6c3b)
++++ .idea/PythonMandatory.iml	(date 1528448605313)
+@@ -4,7 +4,7 @@
+     <content url="file://$MODULE_DIR$">
+       <excludeFolder url="file://$MODULE_DIR$/venv" />
+     </content>
+-    <orderEntry type="jdk" jdkName="Python 3.6 (venv)" jdkType="Python SDK" />
++    <orderEntry type="jdk" jdkName="Python 3.6 (PythonMandatory)" jdkType="Python SDK" />
+     <orderEntry type="sourceFolder" forTests="false" />
+   </component>
+   <component name="TestRunnerService">
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"JavaScriptSettings\">\n    <option name=\"languageLevel\" value=\"ES6\" />\n  </component>\n  <component name=\"ProjectRootManager\" version=\"2\" project-jdk-name=\"Python 3.6 (venv)\" project-jdk-type=\"Python SDK\" />\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 54657998d0a597524b8b96a0680221aee9ee6c3b)
++++ .idea/misc.xml	(date 1528448605422)
+@@ -3,5 +3,5 @@
+   <component name="JavaScriptSettings">
+     <option name="languageLevel" value="ES6" />
+   </component>
+-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.6 (venv)" project-jdk-type="Python SDK" />
++  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.6 (PythonMandatory)" project-jdk-type="Python SDK" />
+ </project>
+\ No newline at end of file
+Index: Gui.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from tkinter import *\nimport os\nfrom PIL import Image\nimport ctypes\nfrom PIL import ImageTk\nfrom PIL import ImageOps\nfrom tkinter import filedialog\nfrom tkinter import messagebox\n# from tkFileDialog import *\n# import tkMessageBox\nimport imghdr\nfrom PIL import ImageDraw\nfrom collections import *\n\n\ndef run():\n    # create the root and the canvas\n    root = Tk()\n    root.title(\"Image Editor\")\n    canvasWidth = 800\n    canvasHeight = 700\n    canvas = Canvas(root, width=canvasWidth, height=canvasHeight, \\\n                    background=\"gray\")\n    toolKitFrame = Frame(root)\n    photoKitFrame = Frame(root)\n\n    toolKitFrame.pack(side=LEFT)\n    photoKitFrame.pack(side=RIGHT)\n\n    # Set up canvas data and call init\n    class Struct: pass\n\n    canvas.data = Struct()\n    canvas.data.width = canvasWidth\n    canvas.data.height = canvasHeight\n    canvas.data.mainWindow = root\n\n    # buttonsInit\n    backgroundColour = \"white\"\n    buttonWidth = 14\n    buttonHeight = 2\n    slider = StringVar()\n    slider.set((\"0% Opacity\"))\n\n    class ToolBar:\n        menubar = Menu(root)\n        fileButton = Menu(menubar, tearoff=0)\n\n        menubar.add_cascade(label=\"File\", menu=fileButton)\n        fileButton.menu = Menu(fileButton, tearoff=0)\n        fileButton.add_command(label=\"New\", command=lambda: newImage(canvas))\n        fileButton.add_command(label=\"Save\")\n        fileButton.add_command(label=\"Restore\")\n        fileButton.add_command(label=\"Undo\")\n        fileButton.add_command(label=\"Redo\")\n        menubar.add_command(label=\"Help\")\n        root.config(menu=menubar)\n\n\n    class ToolKit:\n        toolBoxLabel = Label(toolKitFrame, text=\"Toolbox\")\n        cropButton = Button(toolKitFrame, text=\"Crop\", \\\n                              background=backgroundColour, \\\n                              width=buttonWidth, height=buttonHeight)\n        rotateButton = Button(toolKitFrame, text=\"Rotate\", \\\n                              background=backgroundColour, \\\n                              width=buttonWidth, height=buttonHeight)\n\n        toolBoxLabel.grid(row=2, column=0)\n        cropButton.grid(row=3, column=0)\n        rotateButton.grid(row=4, column=0)\n\n    class PhotoKit:\n        # brightnessButton2 = Button(photoKitFrame, text=\"Brightness\", \\\n        #                            background=backgroundColour, \\\n        #                            width=buttonWidth, height=buttonHeight)\n        #\n        # brightnessButton2.grid(row=2, column=0)\n\n        colourBoxLabel = Label(photoKitFrame, text=\"Colourbox\")\n        exposureButton = Button(photoKitFrame, text=\"Exposure\", \\\n                              background=backgroundColour, \\\n                              width=buttonWidth, height=buttonHeight)\n        saturationButton = Button(photoKitFrame, text=\"Saturation\", \\\n                              background=backgroundColour, \\\n                              width=buttonWidth, height=buttonHeight)\n\n        colourBoxLabel.grid(row=2, column=1)\n        exposureButton.grid(row=3, column=1)\n        saturationButton.grid(row=4, column=1)\n\n\n    canvas.data.image = None\n    canvas.data.brightnessWindowClose = False\n    canvas.data.brightnessLevel = None\n    canvas.data.undoQueue = deque([], 10)\n    canvas.data.redoQueue = deque([], 10)\n    canvas.pack()\n\n    # and launch the app\n    root.mainloop()  # This call BLOCKS (so your program waits)\n\ndef newImage(canvas):\n    imageName = filedialog.askopenfilename()\n    filetype = \"\"\n    # make sure it's an image file\n    try:\n        filetype = imghdr.what(imageName)\n    except:\n        messagebox.showinfo(title=\"Image File\", \\\n                              message=\"Choose an Image File!\", parent=canvas.data.mainWindow)\n    # restrict filetypes to .jpg, .bmp, etc.\n    if filetype in ['jpeg', 'bmp', 'png', 'tiff']:\n        canvas.data.imageLocation = imageName\n        im = Image.open(imageName)\n        canvas.data.image = im\n        canvas.data.originalImage = im.copy()\n        canvas.data.undoQueue.append(im.copy())\n        canvas.data.imageSize = im.size  # Original Image dimensions\n        canvas.data.imageForTk = makeImageForTk(canvas)\n        drawImage(canvas)\n    else:\n        messagebox.showinfo(title=\"Image File\", \\\n                              message=\"Choose an Image File!\", parent=canvas.data.mainWindow)\ndef drawImage(canvas):\n    if canvas.data.image != None:\n        # make the canvas center and the image center the same\n        canvas.create_image(canvas.data.width / 2.0 - canvas.data.resizedIm.size[0] / 2.0,\n                            canvas.data.height / 2.0 - canvas.data.resizedIm.size[1] / 2.0,\n                            anchor=NW, image=canvas.data.imageForTk)\n        canvas.data.imageTopX = int(round(canvas.data.width / 2.0 - canvas.data.resizedIm.size[0] / 2.0))\n        canvas.data.imageTopY = int(round(canvas.data.height / 2.0 - canvas.data.resizedIm.size[1] / 2.0))\n\n\ndef makeImageForTk(canvas):\n    im = canvas.data.image\n    if canvas.data.image != None:\n        # Beacuse after cropping the now 'image' might have diffrent\n        # dimensional ratios\n        imageWidth = canvas.data.image.size[0]\n        imageHeight = canvas.data.image.size[1]\n        # To make biggest version of the image fit inside the canvas\n        if imageWidth > imageHeight:\n            resizedImage = im.resize((canvas.data.width, \\\n                                      int(round(float(imageHeight) * canvas.data.width / imageWidth))))\n            # store the scale so as to use it later\n            canvas.data.imageScale = float(imageWidth) / canvas.data.width\n        else:\n            resizedImage = im.resize((int(round(float(imageWidth) * canvas.data.height / imageHeight)), \\\n                                      canvas.data.height))\n            canvas.data.imageScale = float(imageHeight) / canvas.data.height\n        # we may need to refer to ther resized image atttributes again\n        canvas.data.resizedIm = resizedImage\n        return ImageTk.PhotoImage(resizedImage)\n\n\nrun()
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Gui.py	(revision 54657998d0a597524b8b96a0680221aee9ee6c3b)
++++ Gui.py	(date 1528449267029)
+@@ -17,6 +17,8 @@
+     # create the root and the canvas
+     root = Tk()
+     root.title("Image Editor")
++    root.state('zoomed')  # Makes Fullscreen
++
+     canvasWidth = 800
+     canvasHeight = 700
+     canvas = Canvas(root, width=canvasWidth, height=canvasHeight, \
+Index: Functions.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># TODO:\n# Make 'File' options\n# -New(Place photo)\n# -Save\n# -Restore\n# -Undo\n# -Red0\n\nimport tkinter as tk\nfrom tkinter import ttk,filedialog,messagebox  # Extra components from tkinter (Nicer than the default)\n\ndef newFile():\n    filedialog.askopenfile(mode='rb', title='Choose a file')\n\ndef saveFile():\n    print(\"Save\")\ndef restoreFile():\n    print(\"Restore\")\ndef undoFile():\n    print(\"Undo\")\ndef redoFile():\n    print(\"Redo\")\n\ndef displayHelp():\n    messagebox.showinfo(\"Help\", \"Made by some stupid Geniuses\\n\\n\\n\\n\" +\n                                \"File- Gives some options\\n\\n\\n\"+\n                                \"ToolBox- Physical Alterations\\n\\n\"+\n                                    \"\\tCrop- Remove portions from an image\\n\"\n                                    \"\\tRotate- Rotate an image 90°\\n\\n\\n\"+\n                                \"ColourBox- Digital Alterations\\n\\n\"+\n                                    \"\\tExposure- Increase Exposure of the image\\n\"\n                                    \"\\tSaturate- Saturate the Image\\n\" +\n                                    \"\\tOpacity- Change how Opaque the image is\\n\" +\n                                    \"\\tFilters- Apply custom, default filters\\n\"\n                        )\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Functions.py	(revision 54657998d0a597524b8b96a0680221aee9ee6c3b)
++++ Functions.py	(date 1528449235838)
+@@ -1,12 +1,3 @@
+-# TODO:
+-# Make 'File' options
+-# -New(Place photo)
+-# -Save
+-# -Restore
+-# -Undo
+-# -Red0
+-
+-import tkinter as tk
+ from tkinter import ttk,filedialog,messagebox  # Extra components from tkinter (Nicer than the default)
+ 
+ def newFile():

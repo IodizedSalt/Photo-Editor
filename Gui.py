@@ -34,6 +34,8 @@ canvas.data = Struct()
 canvas.data.width = canvasWidth
 canvas.data.height = canvasHeight
 canvas.data.mainWindow = root
+canvas.data.undoQueue=deque([], 10)
+canvas.data.redoQueue=deque([], 10)
 
 backgroundColour = "white"
 buttonWidth = 14
@@ -48,11 +50,11 @@ def initMenuBar():
 
     menubar.add_cascade(label="File", menu=fileButton)
     fileButton.menu = Menu(fileButton, tearoff=0)
-    fileButton.add_command(label="New", command=lambda: newImage(canvas))
-    fileButton.add_command(label="Save", command=lambda: saveImage(canvas))
-    fileButton.add_command(label="Restore", command=lambda: restoreImage(canvas))
-    fileButton.add_command(label="Undo")
-    fileButton.add_command(label="Redo")
+    fileButton.add_command(label="New               Ctrl + n", command=lambda: newImage(canvas))
+    fileButton.add_command(label="Save               Ctrl + s", command=lambda: saveImage(canvas))
+    fileButton.add_command(label="Restore          Ctrl + r", command=lambda: restoreImage(canvas))
+    fileButton.add_command(label="Undo             Ctrl + z", command=lambda: undo(canvas))
+    fileButton.add_command(label="Redo              Ctrl + x", command=lambda: redo(canvas))
     menubar.add_command(label="Help", command=lambda: displayHelp())
     root.config(menu=menubar)
 
@@ -106,6 +108,12 @@ def initRightKit():
 
 
 def run():
+    root.bind("<Key>", lambda event:keyPressed(canvas, event))
+    root.bind("<Control-z>", lambda event:undo(canvas))
+    root.bind("<Control-x>", lambda event:redo(canvas))
+    root.bind("<Control-r>", lambda event:restoreImage(canvas))
+    root.bind("<Control-n>", lambda event:newImage(canvas))
+    root.bind("<Control-s>", lambda event:saveImage(canvas))
     initMenuBar()
     initLeftKit()
     initRightKit()
