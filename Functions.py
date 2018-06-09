@@ -42,6 +42,15 @@ def saveImage(canvas):
         im = canvas.data.image
         im.save(filename)
 
+def mirror(canvas):
+    canvas.data.colourPopToHappen=False
+    canvas.data.cropPopToHappen=False
+    canvas.data.drawOn=False
+    if canvas.data.image!=None:
+        canvas.data.image=ImageOps.mirror(canvas.data.image)
+        canvas.data.undoQueue.append(canvas.data.image.copy())
+        canvas.data.imageForTk=makeImageForTk(canvas)
+        drawImage(canvas)
 
 def newImage(canvas):
     imageName = filedialog.askopenfilename()

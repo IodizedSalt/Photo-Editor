@@ -28,6 +28,7 @@ def greyscale(canvas):
                 avg = int(round((r + g + b) / 3.0))
                 R, G, B = avg, avg, avg
                 data.append((R, G, B))
+        canvas.data.originalImage = canvas.data.image.copy()
         canvas.data.image.putdata(data)
         canvas.data.undoQueue.append(canvas.data.image.copy())
         canvas.data.imageForTk = makeImageForTk(canvas)
@@ -48,6 +49,7 @@ def sepia(canvas):
                 avg = int(round((r + g + b) / 3.0))
                 R, G, B = avg + 100, avg + 50, avg
                 sepiaData.append((R, G, B))
+        canvas.data.originalImage = canvas.data.image.copy()
         canvas.data.image.putdata(sepiaData)
         canvas.data.undoQueue.append(canvas.data.image.copy())
         canvas.data.imageForTk = makeImageForTk(canvas)
@@ -107,6 +109,7 @@ def posterize(canvas):
                 elif b in range(224, 256):
                     B = 255
                 posterData.append((R, G, B))
+        canvas.data.originalImage = canvas.data.image.copy()
         canvas.data.image.putdata(posterData)
         canvas.data.undoQueue.append(canvas.data.image.copy())
         canvas.data.imageForTk = makeImageForTk(canvas)

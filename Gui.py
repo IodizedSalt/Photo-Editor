@@ -70,9 +70,13 @@ def initLeftKit():
     rotateButton = Button(toolKitFrame, text="Rotate", background=backgroundColour,
                           width=buttonWidth, height=buttonHeight, command=lambda: rotate(canvas))
 
+    mirrorButton = Button(toolKitFrame, text="Mirror", background=backgroundColour,
+                          width=buttonWidth, height=buttonHeight, command=lambda: mirror(canvas))
+
     toolBoxLabel.grid(row=2, column=1, padx=80, pady=10, sticky=NE)
     cropButton.grid(row=3, column=1, padx=50, pady=10, sticky=E)
     rotateButton.grid(row=4, column=1, padx=50, pady=10, sticky=E)
+    mirrorButton.grid(row=5, column=1, padx=50, pady=10, sticky=E)
 
 
 def initRightKit():
@@ -90,10 +94,9 @@ def initRightKit():
     list = ["None", "Greyscale", "Sepia", "Inverted", "Posterize"]
 
     filterBox['values'] = list
-
     def setPhotoFilter(canvas):
-        filter = filterBox.get()
         denial = FALSE  # prevents reapplying same filter multiple times   --- can be removed if we fix greyscale + sepia stacking
+        filter = filterBox.get()
         if filter == "None":
             Filter.none(canvas)
             denial == FALSE
