@@ -3,7 +3,7 @@ from tkinter import *
 import os
 from tkinter.filedialog import asksaveasfilename
 
-from PIL import Image
+from PIL import Image, ImageEnhance
 import ctypes
 from PIL import ImageTk
 from PIL import ImageOps
@@ -102,6 +102,31 @@ def makeImageForTk(canvas):
 def rotate(canvas):
     im = canvas.data.image
     copyim = im.rotate(90, expand=True)
+    canvas.data.image = copyim
+    canvas.data.imageForTk = makeImageForTk(canvas)
+    drawImage(canvas)
+
+def changeBrightness(canvas):
+    brightnessWindow = Toplevel(canvas.data.mainWindow)
+    brightnessWindow.title("Brightness")
+    brightnessUp = Button(brightnessWindow,command=lambda: changeBrightnessUp(canvas),text="+")
+    brightnessDown = Button(brightnessWindow,command=lambda: changeBrightnessDown(canvas),text="-")
+    brightnessUp.pack()
+    brightnessDown.pack()
+
+
+def changeBrightnessUp(canvas):
+    im = canvas.data.image
+    enhancer = ImageEnhance.Brightness(im)
+    copyim = enhancer.enhance(1.25)
+    canvas.data.image = copyim
+    canvas.data.imageForTk = makeImageForTk(canvas)
+    drawImage(canvas)
+
+def changeBrightnessDown(canvas):
+    im = canvas.data.image
+    enhancer = ImageEnhance.Brightness(im)
+    copyim = enhancer.enhance(0.8)
     canvas.data.image = copyim
     canvas.data.imageForTk = makeImageForTk(canvas)
     drawImage(canvas)

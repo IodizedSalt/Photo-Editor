@@ -76,7 +76,7 @@ def initRightKit():
     colourBoxLabel = Label(photoKitFrame, text="Colourbox")
     exposureButton = Button(photoKitFrame, text="Exposure", \
                           background=backgroundColour, \
-                          width=buttonWidth, height=buttonHeight)
+                          width=buttonWidth, height=buttonHeight, command=lambda: changeBrightness(canvas))
     saturationButton = Button(photoKitFrame, text="Saturation", \
                           background=backgroundColour, \
                           width=buttonWidth, height=buttonHeight)
