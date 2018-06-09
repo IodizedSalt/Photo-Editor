@@ -110,10 +110,39 @@ def rotate(canvas):
     drawImage(canvas)
     canvas.data.undoQueue.append(canvas.data.image.copy())
 
+def changeSaturation(canvas):
+    saturationWindow= Toplevel(canvas.data.mainWindow)
+    saturationWindow.wm_attributes("-topmost",1)
+    saturationWindow.title("Saturation")
+    saturationWindow.geometry("250x50+1500+500")
+    saturationUp = Button(saturationWindow, command=lambda: changeSaturationUp(canvas), text="+")
+    saturationDown = Button(saturationWindow, command=lambda: changeSaturationDown(canvas), text="-")
+    saturationUp.pack()
+    saturationDown.pack()
+
+def changeSaturationUp(canvas):
+    im = canvas.data.image
+    enhancer = ImageEnhance.Color(im)
+    copyim = enhancer.enhance(1.25)
+    canvas.data.image = copyim
+    canvas.data.imageForTk = makeImageForTk(canvas)
+    drawImage(canvas)
+    canvas.data.undoQueue.append(canvas.data.image.copy())
+
+def changeSaturationDown(canvas):
+    im = canvas.data.image
+    enhancer = ImageEnhance.Color(im)
+    copyim = enhancer.enhance(0.8)
+    canvas.data.image = copyim
+    canvas.data.imageForTk = makeImageForTk(canvas)
+    drawImage(canvas)
+    canvas.data.undoQueue.append(canvas.data.image.copy())
 
 def changeBrightness(canvas):
     brightnessWindow = Toplevel(canvas.data.mainWindow)
+    brightnessWindow.wm_attributes("-topmost",1)
     brightnessWindow.title("Brightness")
+    brightnessWindow.geometry("250x50+1500+400")
     brightnessUp = Button(brightnessWindow, command=lambda: changeBrightnessUp(canvas), text="+")
     brightnessDown = Button(brightnessWindow, command=lambda: changeBrightnessDown(canvas), text="-")
     brightnessUp.pack()
