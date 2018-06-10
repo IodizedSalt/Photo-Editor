@@ -1,7 +1,3 @@
-from tkinter import *
-import tkinter as tk
-from tkinter import ttk,filedialog  # Extra components from tkinter (Nicer than the default)
-from PIL import Image, ImageTk
 from Functions import *
 
 

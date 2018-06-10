@@ -8,6 +8,9 @@ from tkinter import filedialog
 from tkinter import messagebox
 import imghdr
 from Functions import *
+from MenuFunctions import *
+from ToolBoxFunctions import *
+from ColourBoxFunctions import *
 from PIL import ImageDraw
 from collections import *
 import Filters as Filter
@@ -64,18 +67,14 @@ def initMenuBar():
 
 def initLeftKit():
     toolBoxLabel = Label(toolKitFrame, text="Toolbox")
-    cropButton = Button(toolKitFrame, text="Crop",
-                        background=backgroundColour,
-                        width=buttonWidth, height=buttonHeight)
-    rotateButton = Button(toolKitFrame, text="Rotate", background=backgroundColour,
-                          width=buttonWidth, height=buttonHeight, command=lambda: rotate(canvas))
+    rotateButton90 = Button(toolKitFrame, text="Rotate", background=backgroundColour,
+                          width=buttonWidth, height=buttonHeight, command=lambda: rotateImage(canvas))
 
     mirrorButton = Button(toolKitFrame, text="Mirror", background=backgroundColour,
-                          width=buttonWidth, height=buttonHeight, command=lambda: mirror(canvas))
+                          width=buttonWidth, height=buttonHeight, command=lambda: mirrorImage(canvas))
 
     toolBoxLabel.grid(row=2, column=1, padx=80, pady=10, sticky=NE)
-    cropButton.grid(row=3, column=1, padx=50, pady=10, sticky=E)
-    rotateButton.grid(row=4, column=1, padx=50, pady=10, sticky=E)
+    rotateButton90.grid(row=4, column=1, padx=50, pady=10, sticky=E)
     mirrorButton.grid(row=5, column=1, padx=50, pady=10, sticky=E)
 
 
@@ -138,6 +137,7 @@ def run():
     root.bind("<Control-r>", lambda event: restoreImage(canvas))
     root.bind("<Control-n>", lambda event: newImage(canvas))
     root.bind("<Control-s>", lambda event: saveImage(canvas))
+
     initMenuBar()
     initLeftKit()
     initRightKit()
