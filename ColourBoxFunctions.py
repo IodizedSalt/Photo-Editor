@@ -27,11 +27,10 @@ def changeSaturation(canvas):
     saturationDown = Button(saturationWindow, command=lambda: changeSaturationDown(canvas), text="-", width=100, background="white")
     saturationUp.pack()
     saturationDown.pack()
-
 def changeSaturationUp(canvas):
     im = canvas.data.image
     enhancer = ImageEnhance.Color(im)
-    copyim = enhancer.enhance(1.25)
+    copyim = enhancer.enhance(1.2)
     canvas.data.image = copyim
     canvas.data.imageForTk = makeImageForTk(canvas)
     drawImage(canvas)

@@ -38,8 +38,8 @@ canvas.data = Struct()
 canvas.data.width = canvasWidth
 canvas.data.height = canvasHeight
 canvas.data.mainWindow = root
-canvas.data.undoQueue = deque([], 15)
-canvas.data.redoQueue = deque([], 15)
+canvas.data.undoQueue = deque([], 25)
+canvas.data.redoQueue = deque([], 25)
 
 backgroundColour = "white"
 buttonWidth = 14
@@ -94,23 +94,42 @@ def initRightKit():
 
     filterBox['values'] = list
     def setPhotoFilter(canvas):
-        denial = FALSE  # prevents reapplying same filter multiple times   --- can be removed if we fix greyscale + sepia stacking
         filter = filterBox.get()
+
+        if filter == "None":
+            print(filter)
+            pass
+        elif filter == "Greyscale" or "Sepia" or "Inverted" or "Posterize":
+            print(filter)
+            warning = messagebox.askquestion("WARNING", "Applying " + filter + " on top of another filter will make\n "
+                                                       "it impossible to restore the original image. Continue?", icon="warning")
+
         if filter == "None":
             Filter.none(canvas)
-            denial == FALSE
-        elif filter == "Greyscale" and denial == FALSE:
-            Filter.greyscale(canvas)
-            denial == TRUE
-        elif filter == "Sepia" and denial == FALSE:
-            Filter.sepia(canvas)
-            denial == TRUE
-        elif filter == "Inverted" and denial == FALSE:
-            Filter.invert(canvas)
-            denial == TRUE
-        elif filter == "Posterize" and denial == FALSE:
-            Filter.posterize(canvas)
-            denial == TRUE
+
+        elif filter == "Greyscale":
+                if warning == "yes":
+                    Filter.greyscale(canvas)
+                elif warning == "no":
+                    pass
+
+        elif filter == "Sepia":
+            if warning == "yes":
+                Filter.sepia(canvas)
+            elif warning == "no":
+                pass
+
+        elif filter == "Inverted":
+                if warning == "yes":
+                    Filter.invert(canvas)
+                elif warning == "no":
+                    pass
+
+        elif filter == "Posterize":
+                if warning == "yes":
+                    Filter.posterize(canvas)
+                elif warning == "no":
+                    pass
 
     colourBoxLabel.grid(row=2, column=1, padx=70, pady=10, sticky=NW)
     exposureButton.grid(row=3, column=1, padx=50, pady=10, sticky=W)
